@@ -25,7 +25,7 @@ SO THAT I can organize and plan my business
 
 The following animation shows an example of the application being used from the command line:
 
-![Command Line demo](/assets/12-sql-homework-demo-01.gif)
+![Command Line demo](./assets/12-sql-homework-demo-01.gif)
 
 
 # DEVELOPER's NOTES
@@ -41,7 +41,7 @@ You might also want to make your queries asynchronous. MySQL2 exposes a `.promis
 
 Design the following database schema containing three tables:
 
-![Database Demo](/assets/12-sql-homework-demo-02.png)
+![Database Demo](./assets/12-sql-homework-demo-02.png)
 
 * **department:**
 
