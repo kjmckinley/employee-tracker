@@ -3,12 +3,13 @@
 // require mysql and inquirer packages
 const mysql = require('mysql');
 const inquirer = require('inquirer');
+const { onErrorResumeNext } = require('rxjs');
 
 //mysql connection
 const connection = mysql.createConnection({
     host: 'localhost',
 
-    // Your port; if not 3306
+    // Your port
     port: 3001,
 
     // Your username
@@ -19,12 +20,14 @@ const connection = mysql.createConnection({
     database: 'employee_db'
 });
 
+// if there are no errors, start the connection of the server to the database
 connection.connect(function(err) {
     if(err) throw err;
     menuPrompt();
 
 });
 
+// brings up the initial menue that the user can navigate through
 function menuPrompt() {
     inquirer.prompt({
         name: "task",
@@ -43,6 +46,7 @@ function menuPrompt() {
         ]
     })
 
+    // logic of actions that will be taken when the user selects a specific choice from the menu
     .then(function(response) {
         if (response.task === 'View Employees') {
             viewEmployees();
@@ -74,6 +78,7 @@ function menuPrompt() {
     })
 }
 
+// function that displays employee information
 function viewEmployees() {
     var query = "SELECT * FROM employee";
         connection.query(query, function(err, res){
@@ -86,6 +91,7 @@ function viewEmployees() {
         });
 };
 
+// function that displays employee roles
 function viewEmployeeRoles() {
     var query = "SELECT * FROM role";
         connecttion.query(query, function(err, res) {
