@@ -81,7 +81,18 @@ function viewEmployees() {
         res.forEach(employee => {
             console.log(`ID: ${employee.id} | Name: ${employee.first_name} ${employee.last_name} | Role: ${employee.role_id} | Manager ID: ${employee.manager_id}`);
             
-        })
+        });
+        menuPrompt();
+        });
+};
+
+function viewEmployeeRoles() {
+    var query = "SELECT * FROM role";
+        connecttion.query(query, function(err, res) {
+            console.log(`ROLES:`)
+        res.forEach(role => {
+            console.log(`ID: ${role.id} | Title: ${role.title} | Salary: ${role.salary} | Department: ${role.department_id}`);
+        });
         menuPrompt();
         });
 };
