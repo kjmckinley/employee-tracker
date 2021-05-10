@@ -17,6 +17,7 @@ SO THAT I can organize and plan my business
 - npm install inquirer
 - npm install mysql
 - node server.js
+- mysql
 
 ## Repository
 [Project Repo](https://github.com/kjmckinley/employee-tracker.git)
