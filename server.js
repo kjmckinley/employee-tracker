@@ -3,7 +3,6 @@
 // require mysql and inquirer packages
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-const { onErrorResumeNext } = require('rxjs');
 
 //mysql connection
 const connection = mysql.createConnection({
