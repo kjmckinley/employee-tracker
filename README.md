@@ -1,9 +1,8 @@
 # Employee Tracker
 
 ## Description
-```
+
 This application is meant to demonstrate the usages of navigating a server and changing a database through mySQL. There is no live link for this application. The purpose of this set of code is to create an amployee database that can navigate through departments, assign rolls as well as create, delete and change employee information. This is done by navigating through the console and following the menu prompts displayed to the user.
-```
 
 ## User Story
 
