@@ -486,31 +486,43 @@ empDelete = {}
 
 // function that allows the user to select an employee to delete
 const chooseEmployeeDelete = () => {
-let deleteEmpArr = [];
+    let deleteEmpArr = [];
 
-const sql = `SELECT * FROM employees`;
-db.query(sql,(req, res) => {
-  for(let i = 0; i < res.length; i++){
-    let employee = `${res[i].first_name} ${res[i].last_name}`
-    deleteEmpArr.push(employee)
-  }
-  inquirer.prompt({
-    type: 'list',
-    name: 'deleteEmp',
-    message: 'Which employee would you like to delete?',
-    choices: deleteEmpArr.map(employee => `${employee}`)
-  }).then(employee => {
-    let index = employee.deleteEmp.indexOf(" ")
-    empDelete.first_name = employee.deleteEmp.substr(0, index)
-    empDelete.last_name = employee.deleteEmp.substr(index + 1)
-    
-    const sql = `SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
-    const params = [empDelete.first_name, empDelete.last_name]
-    db.query(sql, params, (req, result) => {
-      empDelete.id = result[0].id
-      return deleteEmp(empDelete)
+    const sql = `SELECT * FROM employees`;
+    db.query(sql,(req, res) => {
+        for(let i = 0; i < res.length; i++){
+            let employee = `${res[i].first_name} ${res[i].last_name}`
+            deleteEmpArr.push(employee)
+        }
+        inquirer.prompt({
+            type: 'list',
+            name: 'deleteEmp',
+            message: 'Which employee would you like to delete?',
+            choices: deleteEmpArr.map(employee => `${employee}`)
+        }).then(employee => {
+            let index = employee.deleteEmp.indexOf(" ")
+            empDelete.first_name = employee.deleteEmp.substr(0, index)
+            empDelete.last_name = employee.deleteEmp.substr(index + 1)
+            
+            const sql = `SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
+            const params = [empDelete.first_name, empDelete.last_name]
+            db.query(sql, params, (req, result) => {
+            empDelete.id = result[0].id
+            return deleteEmp(empDelete)
+            })
+        })
     })
-  })
-})
 }
 
+// function that deletes the selected employee
+const deleteEmp = () => {
+    const sql = `DELETE FROM employees WHERE id = ?`;
+    const params = [empDelete.id]
+    db.query(sql, params, (err, res) => {
+      if(!res.affectedRows){
+        console.log('Employee not found')
+      }
+      console.log(`${empDelete.first_name} ${empDelete.last_name} successfully deleted.`)
+      startMenu();
+    })
+}
