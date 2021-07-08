@@ -394,3 +394,46 @@ const chooseRole = () => {
   
 // functions for all DELETE options
 let currentDept = {};
+
+// function that allows the user to select the department that they want to delete
+const selectDept = () => {
+    let deptArr = [];
+    const sql = `SELECT * FROM departments`;
+  
+    db.query(sql, (err, res) => {
+      if(err) throw err
+      for(let i = 0; i < res.length; i++) {
+        dept = res[i].dept_name
+        deptArr.push(dept)
+      }
+      inquirer.prompt({
+      type: 'list',
+      name: 'deleteDept',
+      message: 'Which department would you like to delete?',
+      choices: deptArr.map(dept => `${dept}`)
+    })
+    .then(chosenDept => {
+      currentDept.dept_name = chosenDept.deleteDept
+  
+      const sql = `SELECT id FROM departments WHERE departments.dept_name = ?`;
+      const params = [currentDept.dept_name];
+      db.query(sql, params, (err, result) => {
+        if(err) throw err;
+        currentDept.id = result[0].id
+        return deleteDept(currentDept)
+      })
+    })
+  })
+  }
+
+  // function that deletes the selected department
+  const deleteDept = (dept) => {
+    const sql = `DELETE FROM departments WHERE id = ?`;
+    const params = [dept.id];
+
+    db.query(sql, params, (err, result) => {
+      if(err) throw err
+      console.log(`${dept.dept_name} department successfully deleted.`)
+      startMenu();
+    })
+}
