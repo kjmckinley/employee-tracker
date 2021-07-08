@@ -437,3 +437,33 @@ const selectDept = () => {
       startMenu();
     })
 }
+
+// standby roll that will house the role that is to be deleted
+roleDelete = {}
+
+// function that allows the user to select a role to delete
+const chooseRoleDelete = () => {
+let deleteRoleArr = [];
+
+const sql = `SELECT roles.title FROM roles`;
+db.query(sql,(req, res) => {
+  for(let i = 0; i < res.length; i++){
+    role = res[i].title
+    deleteRoleArr.push(role)
+  }
+  inquirer.prompt({
+    type: 'list',
+    name: 'deleteRole',
+    message: 'Which role would you like to delete?',
+    choices: deleteRoleArr.map(role => `${role}`)
+  }).then(chosenRole => {
+    roleDelete.title = chosenRole.deleteRole
+    const sql = `SELECT id FROM roles WHERE roles.title = ?`;
+    const params = [roleDelete.title]
+    db.query(sql, params, (req, result) => {
+      roleDelete.id = result[0].id
+      return deleteRole(roleDelete)
+    })
+  })
+})
+}
