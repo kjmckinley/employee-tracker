@@ -526,3 +526,20 @@ const deleteEmp = () => {
       startMenu();
     })
 }
+
+// ERROR catches
+
+// function that responds to requests not found
+app.use((req, res) => {
+    res.status(404).end();
+  })
+  
+  // function that connects to the server after connecting to the database
+  db.connect(err => {
+    if (err) throw err;
+    console.log('Database connected.');
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      startMenu();
+    });
+  });
