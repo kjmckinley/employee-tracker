@@ -364,3 +364,29 @@ const chooseRole = () => {
       })
     })
   }
+
+  // function that actually updates the employee role in the database
+  const updateRole = (currentEmployee) => {
+    inquirer.prompt({
+      type: 'list',
+      name: 'confirmUpdate',
+      message: 'Are you sure you want to update the role of this employee?',
+      choices: ['Confirm update.','Cancel, return to menu.']
+    }).then(data => {
+      //db.query()
+      if(data.confirmUpdate === "Cancel, return to menu."){
+        console.log('Update cancelled.')
+        startMenu();
+      }
+      if(data.confirmUpdate === "Confirm update."){
+        console.log(currentEmployee)
+        const sql = `UPDATE employees SET role_id = ? WHERE id = ?`;
+        const params = [currentEmployee.newRole_id, currentEmployee.id]
+        db.query(sql, params, (err, res) => {
+          console.log(`${currentEmployee.first_name} ${currentEmployee.last_name} successfully updated to ${currentEmployee.newRole}`)
+          startMenu();
+        })
+      }
+    })
+  }
+  
