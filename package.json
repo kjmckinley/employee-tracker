@@ -1,8 +1,15 @@
 {
   "name": "12-Employee_Tracking",
   "version": "1.0.0",
-  "description": "Developers are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. These interfaces are known as Content Management Systems (CMS). Your challenge this week is to build a command-line application to manage a company's database of employees using Node.js, Inquirer, and MySQL.",
+  "description": "This application is meant to demonstrate the usages of navigating a server and changing a database through mySQL. There is no live link for this application. The purpose of this set of code is to create an amployee database that can navigate through departments, assign rolls as well as create, delete and change employee information. This is done by navigating through the console and following the menu prompts displayed to the user.",
   "main": "server.js",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.1.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -17,11 +24,5 @@
   "bugs": {
     "url": "https://github.com/kjmckinley/employee-tracker/issues"
   },
-  "homepage": "https://github.com/kjmckinley/employee-tracker#readme",
-  "dependencies": {
-    "console.table": "^0.10.0",
-    "inquirer": "^8.1.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.2.5"
-  }
+  "homepage": "https://github.com/kjmckinley/employee-tracker#readme"
 }
