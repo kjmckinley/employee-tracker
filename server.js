@@ -129,6 +129,7 @@ ORDER BY employees.id;`
     })
 }
 
+
 // functions for all ADD options
 
 // function to add a department to the database
@@ -295,6 +296,7 @@ const selectManager = (newEmployeeData) => {
     })
   }
 
+
 // functions for all UPDATE options
 
 // empty current employee to insert into
@@ -390,3 +392,5 @@ const chooseRole = () => {
     })
   }
   
+// functions for all DELETE options
+let currentDept = {};
