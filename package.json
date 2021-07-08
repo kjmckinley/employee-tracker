@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/kjmckinley/employee-tracker#readme",
   "dependencies": {
-    "inquirer": "^8.0.0",
-    "mysql": "^2.18.1"
+    "console.table": "^0.10.0",
+    "inquirer": "^8.1.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5"
   }
 }

@@ -1,103 +1,113 @@
 // Employee Tracker
 
-// require mysql and inquirer packages
-const mysql = require('mysql');
+// require express and inquirer packages
+const express = require('express');
+const { createPromptModule } = require('inquirer');
+
+const router = require('express').Router();
+
 const inquirer = require('inquirer');
+const { connect } = require('./db/connection');
 
-//mysql connection
-const connection = mysql.createConnection({
-    host: 'localhost',
+const PORT = process.env.PORT || 3001;
+const app = express();
 
-    // Your port
-    port: 3001,
+const db = require('./db/connection')
+const apiRoutes = require('./routes/apiRoutes')
 
-    // Your username
-    user: 'root',
+//middleware
+app.use(express.urlencoded({ extended: false}));
+app.use(express.json());
 
-    // Your password
-    password: 'password',
-    database: 'employee_db'
-});
+app.use('/api', apiRoutes)
 
-// if there are no errors, start the connection of the server to the database
-connection.connect(function(err) {
-    if(err) throw err;
-    menuPrompt();
 
-});
+const startMenu = () => {
+  inquirer.prompt({
+    type: 'list',
+    name: 'selectAction',
+    message: 'What would you like to do?',
+    choices: [
+              'View Employees',
+              'View Departments', 
+              'View Roles', 
+              'Add An Employee',
+              'Add A Role', 
+              'Add A Department', 
+              'Update An Employee Role', 
+              'Delete A Department', 
+              'Delete A Role', 
+              'Delete An Employee'
+            ]
+  })
 
-// brings up the initial menue that the user can navigate through
-function menuPrompt() {
-    inquirer.prompt({
-        name: "task",
-        type: "list",
-        message: "What would you like to do?",
-        choices: [
-            "View Employees",
-            "View Employee Roles",
-            "View Employee Departments",
-            "Add an Employee",
-            "Add an Employee Role",
-            "Update Employee Role",
-            "Add a Department",
-            "Remove Employee",
-            "EXIT"
-        ]
-    })
+  .then(action => {
+        action = action.selectAction
 
-    // logic of actions that will be taken when the user selects a specific choice from the menu
-    .then(function(response) {
-        if (response.task === 'View Employees') {
+        switch (action) {
+
+        case 'View Employees':
             viewEmployees();
-        }
-        else if (response.task === 'View Employee Roles') {
-            viewEmployeeRoles();
-        }
-        else if (response.task === 'View Employee Departments') {
-            viewEmployeeDepartments();
-        }
-        else if (response.task === 'Add an Employee') {
+            break;  
+
+        case 'View Departments':
+            viewDepartments();
+            break;
+
+        case 'View Roles':
+            viewRoles();
+            break;
+
+        case 'Add An Employee':
             addEmployee();
-        }
-        else if (response.task === 'Add an Employee Role') {
-            addEmployeeRole();
-        }
-        else if (response.task === 'Update Employee Role') {
-            updateEmployeeRole();
-        }
-        else if (response.task === 'Add a Department') {
-            addDepartment();
-        }
-        else if (response.task === 'Remove Employee') {
-            removeEmployee();
-        }
-        else if (response.task === 'EXIT') {
-            connection.end();
+            break;
+
+        case 'Add A Role':
+            addRole();
+            break;
+
+        case 'Add A Department':
+            addDept();
+            break;
+
+        case 'Update An Employee Role':
+            selectEmployee();
+            break;
+
+        case 'Delete A Department':
+            selectDept();
+            break;
+
+        case 'Delete A Role':
+            chooseRoleDelete();
+            break;
+
+        case 'Delete An Employee':
+            chooseEmployeeDelete();
+            break;
         }
     })
 }
 
-// function that displays employee information
-function viewEmployees() {
-    var query = "SELECT * FROM employee";
-        connection.query(query, function(err, res){
-            console.log(`EMPLOYEES:`)
-        res.forEach(employee => {
-            console.log(`ID: ${employee.id} | Name: ${employee.first_name} ${employee.last_name} | Role: ${employee.role_id} | Manager ID: ${employee.manager_id}`);
-            
-        });
-        menuPrompt();
-        });
-};
+// Functions to view all user options
 
-// function that displays employee roles
-function viewEmployeeRoles() {
-    var query = "SELECT * FROM role";
-        connecttion.query(query, function(err, res) {
-            console.log(`ROLES:`)
-        res.forEach(role => {
-            console.log(`ID: ${role.id} | Title: ${role.title} | Salary: ${role.salary} | Department: ${role.department_id}`);
-        });
-        menuPrompt();
-        });
-};
+const viewDepartments = () => {
+    const sql = 'SELECT * FROM departments';
+    db.query(sql, (err, res) => {
+      if (err) throw err
+      console.table(res)
+      startMenu();
+    })
+  }
+
+  const viewRoles = () => {
+    const sql = 'SELECT roles.title, roles.id, roles.salary, departments.dept_name FROM roles JOIN departments ON roles.dept_id = departments.id';
+    
+    db.query(sql, (err, res) => {
+      if (err) throw err
+      console.table(res)
+      startMenu();
+    })
+  }
+
+  
