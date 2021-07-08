@@ -1,41 +1,32 @@
 -- Employee Tracker
 
--- initiallizes a database called employee_db
-CREATE DATABASE employee_db;
+DROP DATABASE IF EXISTS company;
 
-USE employee_db;
+CREATE DATABASE company;
+USE company;
 
--- creates a table that holds information for employee
-CREATE TABLE employee (
-    id INT AUTO_INCREMENT,
-    first_name VARCHAR(30) NOT NULL,
-    last_name VARCHAR(30) NOT NULL,
-    role_id INT NOT NULL,
-    manager_id INT NOT NULL,
-    PRIMARY KEY (id)
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS departments;
 
-    FOREIGN KEY(role_id)
-    REFERENCES role(id),
-
-    FOREIGN KEY(manager_id)
-    REFERENCES employee(id)
+CREATE TABLE departments (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   dept_name VARCHAR(30)
 );
 
--- creates a table that holds information for employee roles
-CREATE TABLE role (
-    id INT AUTO_INCREMENT,
-    title VARCHAR(30) NOT NULL,
-    salary DECIMAL(6,2) NOT NULL,
-    department_id INT NOT NULL,
-    PRIMARY KEY(id),
-
-    FOREIGN KEY(department_id)
-    REFERENCES department(id)
+CREATE TABLE roles (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   title VARCHAR(30) NOT NULL,
+   salary DECIMAL(15,2),
+   dept_id INT,
+   CONSTRAINT fk_dept FOREIGN KEY (dept_id) REFERENCES departments(id) ON DELETE SET NULL
 );
 
--- creates a table that holds information for departments
-CREATE TABLE department (
-    id INT AUTO_INCREMENT,
-    name VARCHAR(30) NOT NULL,
-    PRIMARY KEY(id) 
-);
+CREATE TABLE employees (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   first_name VARCHAR(30) NOT NULL,
+   last_name VARCHAR(30) NOT NULL,
+   role_id INT,
+   manager_id INT,
+   CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
+   );
