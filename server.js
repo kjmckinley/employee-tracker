@@ -467,3 +467,18 @@ db.query(sql,(req, res) => {
   })
 })
 }
+
+// function that deletes the selected role
+const deleteRole = (roleDelete) => {
+    const sql = `DELETE FROM roles WHERE id = ?`;
+    const params = [roleDelete.id]
+    db.query(sql, params, (err, res) => {
+      if(!res.affectedRows){
+        console.log('Role not found')
+      }
+      console.log(`${roleDelete.title} successfully deleted.`)
+      startMenu();
+    })
+  }
+
+  
