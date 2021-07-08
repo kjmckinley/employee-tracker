@@ -151,51 +151,100 @@ const addDept = () => {
       })
   }
 
-  // function that allows user to add a role to the database
-  const addRole = () => {
-    deptArr = []
-    newRoleData = {}
-    const sql = `SELECT dept_name FROM departments`;
-    db.query(sql, (err, res) => {
-      for (let i = 0; i < res.length; i++) {
-        dept = res[i].dept_name
-        deptArr.push(dept)
-      }
-      inquirer.prompt([{
-        type: 'input',
-        name: 'addRole',
-        message: 'What is the job title of the role?'
-      }, {
-        type: 'input',
-        name: 'addRoleSalary',
-        message: 'What is the salary of the new role?'
-      }, {
-        type: 'list',
-        name: 'deptOfRole',
-        message: 'Which department does the new role belong to?',
-        choices: deptArr.map(dept => `${dept}`)
-      }]).then(dept => {
-        newRoleData.newRole = dept.addRole
-        newRoleData.newSalary = dept.addRoleSalary
-        newRoleData.dept = dept.deptOfRole
-  
-        const sql = `SELECT id FROM departments WHERE dept_name = ?`;
-        const params = [newRoleData.dept]
-        db.query(sql, params, (err, res) => {
-          newRoleData.id = res[0].id
-          completeAddRole(newRoleData);
-        })
-      })
-    })
-  }
+// function that allows user to add a role to the database
+const addRole = () => {
+deptArr = []
+newRoleData = {}
+const sql = `SELECT dept_name FROM departments`;
 
-  // takes the user input and inserts the new role into the database using mySQL
-  const completeAddRole = (newRoleData) => {
-    const sql = `INSERT INTO roles (title, salary, dept_id) VALUES (?,?,?)`;
-    const params = [newRoleData.newRole, newRoleData.newSalary, newRoleData.id]
+db.query(sql, (err, res) => {
+    for (let i = 0; i < res.length; i++) {
+    dept = res[i].dept_name
+    deptArr.push(dept)
+    }
+
+    // ask user information on new role
+    inquirer.prompt([{
+    type: 'input',
+    name: 'addRole',
+    message: 'What is the job title of the role?'
+    }, {
+    type: 'input',
+    name: 'addRoleSalary',
+    message: 'What is the salary of the new role?'
+    }, {
+    type: 'list',
+    name: 'deptOfRole',
+    message: 'Which department does the new role belong to?',
+    choices: deptArr.map(dept => `${dept}`)
+    }]).then(dept => {
+    newRoleData.newRole = dept.addRole
+    newRoleData.newSalary = dept.addRoleSalary
+    newRoleData.dept = dept.deptOfRole
+
+    const sql = `SELECT id FROM departments WHERE dept_name = ?`;
+    const params = [newRoleData.dept]
     db.query(sql, params, (err, res) => {
-      if(err) throw err;
-      console.log(`${newRoleData.newRole} added successfully!`)
-      startMenu();
+        newRoleData.id = res[0].id
+        completeAddRole(newRoleData);
     })
-  }
+    })
+})
+}
+
+// takes the user input and inserts the new role into the database using mySQL
+const completeAddRole = (newRoleData) => {
+const sql = `INSERT INTO roles (title, salary, dept_id) VALUES (?,?,?)`;
+const params = [newRoleData.newRole, newRoleData.newSalary, newRoleData.id]
+db.query(sql, params, (err, res) => {
+    if(err) throw err;
+    console.log(`${newRoleData.newRole} added successfully!`)
+    startMenu();
+})
+}
+
+// an empty new employee object
+newEmployeeData = {};
+
+// function that allows user to add an employee
+const addEmployee = () => {
+roleArr = []
+
+const sql = `SELECT roles.title FROM roles`;
+db.query(sql, (err, res) => {
+    if (err) throw err
+    for (let i = 0; i < res.length; i++) {
+    role = `${res[i].title}`
+    roleArr.push(role)
+    }
+
+    // ask user information on new employee
+    inquirer.prompt([{
+        type: 'input',
+        name: 'first_name',
+        message: `Employee's first name:`
+    }, {
+        type: 'input',
+        name: 'last_name',
+        message: `Employee's last name:`
+    }, {
+        type: 'list',
+        name: 'title',
+        message: 'Select employee role',
+        choices: roleArr.map(role => `${role}`)
+    }])
+    .then(employee => {
+        managerArr = [];
+        newEmployeeData.first_name = employee.first_name
+        newEmployeeData.last_name = employee.last_name
+        newEmployeeData.title = employee.title
+
+        const sql = `SELECT id FROM roles WHERE roles.title = ?`
+        const params = [newEmployeeData.title]
+        db.query(sql, params, (err, res) => {
+        newEmployeeData.role_id = res[0].id
+        selectManager(newEmployeeData);
+        })
+    })
+})
+}  
