@@ -91,6 +91,7 @@ const startMenu = () => {
 
 // Functions to view all user options
 
+// function view all departments
 const viewDepartments = () => {
     const sql = 'SELECT * FROM departments';
     db.query(sql, (err, res) => {
@@ -100,28 +101,52 @@ const viewDepartments = () => {
     })
   }
 
-  const viewRoles = () => {
-    const sql = 'SELECT roles.title, roles.id, roles.salary, departments.dept_name FROM roles JOIN departments ON roles.dept_id = departments.id';
-    
+// function to view all roles
+const viewRoles = () => {
+const sql = 'SELECT roles.title, roles.id, roles.salary, departments.dept_name FROM roles JOIN departments ON roles.dept_id = departments.id';
+
+db.query(sql, (err, res) => {
+    if (err) throw err
+    console.table(res)
+    startMenu();
+})
+}
+
+// function to view all employees
+const viewEmployees= () => {
+
+const sql= `SELECT employees.id, employees.first_name, employees.last_name, employees.manager_id, roles.title, roles.salary, departments.dept_name 
+FROM employees 
+JOIN roles ON employees.role_id = roles.id 
+JOIN departments ON roles.dept_id = departments.id 
+ORDER BY employees.id;`
+
+
     db.query(sql, (err, res) => {
-      if (err) throw err
-      console.table(res)
-      startMenu();
+    if (err) throw err
+    console.table(res)
+    startMenu();
     })
-  }
+}
 
-  const viewEmployees= () => {
+// functions for all add options
 
-    const sql= `SELECT employees.id, employees.first_name, employees.last_name, employees.manager_id, roles.title, roles.salary, departments.dept_name 
-    FROM employees 
-    JOIN roles ON employees.role_id = roles.id 
-    JOIN departments ON roles.dept_id = departments.id 
-    ORDER BY employees.id;`
-    
-    
-      db.query(sql, (err, res) => {
-        if (err) throw err
-        console.table(res)
-        startMenu();
+// function to add a department to the database
+const addDept = () => {
+    inquirer.prompt({
+        type: 'input',
+        name: 'dept_name',
+        message: 'What is the name of the new department?'
       })
-    }
+      .then(newDept => {
+        newDept = newDept.dept_name
+        const sql = `INSERT INTO departments (dept_name) VALUES (?)`;
+        const params = newDept
+        db.query(sql, params, (err, result) => {
+          if (err) throw err
+          //console.table(result)
+          console.log(`The ${newDept} department was added successfully.`)
+          startMenu();
+        })
+      })
+  }
