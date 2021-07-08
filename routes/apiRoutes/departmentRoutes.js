@@ -19,3 +19,26 @@ router.get('/departments', (req, res) => {
     })
 });
 
+// delete command that will delete the department from the database
+router.delete('/department/:id', (req, res) => {
+    const sql = `DELETE FROM departments WHERE id = ?`;
+    const params = [req.params.id];
+  
+    db.query(sql, params, (err, result) => {
+      if(err) {
+        res.json({error: err.message});
+        return
+      }
+      else if (!result.affectedRows){
+        res.json({message: 'Department not found.'})
+      }
+      else {
+        res.json({
+          message: 'Department successfully deleted.',
+          changes: result.affectedRows,
+          id: req.params.id
+        })
+      }
+    })
+})
+
