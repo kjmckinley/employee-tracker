@@ -333,3 +333,34 @@ const selectEmployee = () => {
     })
   })
 }
+
+// function that allows user to select a new role for the employee they wish to update
+const chooseRole = () => {
+    roleArr = []
+  
+    const sql = `SELECT roles.title FROM roles`;
+    db.query(sql, (err, res) => {
+      if (err) throw err
+      for (let i = 0; i < res.length; i++) {
+        role = `${res[i].title}`
+        roleArr.push(role)
+      }
+      inquirer.prompt({
+        type: 'list',
+        name: 'updateRole',
+        message: 'Select new role.',
+        choices: roleArr.map(role => `${role}`)
+  
+      }).then(newRole => {
+        currentEmployee.newRole = newRole.updateRole
+        
+        const sql = `SELECT id FROM roles WHERE roles.title = ?`
+        const params = [currentEmployee.newRole]
+        db.query(sql, params, (err, res) => {
+          if(err) throw err;
+          currentEmployee.newRole_id = res[0].id
+          updateRole(currentEmployee)
+        })
+      })
+    })
+  }
