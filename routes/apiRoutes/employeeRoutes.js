@@ -33,6 +33,7 @@ router.get('/employees/:id', (req, res) => {
 const sql = `SELECT * FROM employees WHERE id = ?`;
 const params = [req.params.id]
 
+//Check for errors
 db.query(sql, params, (err, row) => {
     if (err) {
     res.status(400).json({
@@ -70,6 +71,7 @@ db.query(sql, params, (err, result) => {
 })
 });
 
+// adds employee to db
 router.post('/employee', ({body}, res) => {
 const errors = checkInput(body, 'first_name', 'last_name','role_id','manager_id')
 
