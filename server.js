@@ -91,7 +91,7 @@ const optionsMenu = () => {
 
 // Functions to VIEW all user options
 
-// function view all departments
+// function to view all departments
 const showDepartments = () => {
     const sql = 'SELECT * FROM departments';
     db.query(sql, (err, res) => {
