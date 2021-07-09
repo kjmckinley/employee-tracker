@@ -32,6 +32,6 @@ The following animation shows an example of the application being used from the 
 ## Contributors
 - Kyle McKinley: kjmckinley
 - Ritchie Ortiz: xRitchie91
-- Nancy Rosas, who almost immediately spotted why my server wouldn't start.
-- github: lacey-griffith, who suffered greatly so that we could suffer less.
+- Nancy Rosas: nancyrosas0 --> who almost immediately spotted why my server wouldn't start.
+- github repo: lacey-griffith, who suffered greatly so that we could suffer less.
 
