@@ -408,26 +408,26 @@ const selectDepartment = () => {
       }
       inquirer.prompt({
       type: 'list',
-      name: 'deleteDept',
+      name: 'deleteDepartment',
       message: 'Which department would you like to delete?',
       choices: deptArr.map(dept => `${dept}`)
     })
     .then(chosenDept => {
-      currentDept.dept_name = chosenDept.deleteDept
+      currentDept.dept_name = chosenDept.deleteDepartment
   
       const sql = `SELECT id FROM departments WHERE departments.dept_name = ?`;
       const params = [currentDept.dept_name];
       db.query(sql, params, (err, result) => {
         if(err) throw err;
         currentDept.id = result[0].id
-        return deleteDept(currentDept)
+        return deleteDepartment(currentDept)
       })
     })
   })
   }
 
   // function that deletes the selected department
-  const deleteDept = (dept) => {
+  const deleteDepartment = (dept) => {
     const sql = `DELETE FROM departments WHERE id = ?`;
     const params = [dept.id];
 
