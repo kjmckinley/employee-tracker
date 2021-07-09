@@ -28,12 +28,12 @@ router.get('/employees', (req, res) => {
     })
 })
 
-//function that gets one employee
+// function that gets one employee
 router.get('/employees/:id', (req, res) => {
     const sql = `SELECT * FROM employees WHERE id = ?`;
     const params = [req.params.id]
 
-    //Check for errors
+    // check for errors
     db.query(sql, params, (err, row) => {
         if (err) {
         res.status(400).json({
