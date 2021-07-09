@@ -1,9 +1,9 @@
 -- Employee Tracker
 
-DROP DATABASE IF EXISTS company;
+DROP DATABASE IF EXISTS employeeTracker_db;
 
-CREATE DATABASE company;
-USE company;
+CREATE DATABASE employeeTracker_db;
+USE employeeTracker_db;
 
 DROP TABLE IF EXISTS employees;
 DROP TABLE IF EXISTS roles;
