@@ -22,7 +22,7 @@ app.use(express.json());
 app.use('/api', apiRoutes)
 
 
-const startMenu = () => {
+const optionsMenu = () => {
   inquirer.prompt({
     type: 'list',
     name: 'selectAction',
@@ -47,15 +47,15 @@ const startMenu = () => {
         switch (action) {
 
         case 'View Employees':
-            viewEmployees();
+            showEmployees();
             break;  
 
         case 'View Departments':
-            viewDepartments();
+            showDepartments();
             break;
 
         case 'View Roles':
-            viewRoles();
+            showRoles();
             break;
 
         case 'Add An Employee':
@@ -67,7 +67,7 @@ const startMenu = () => {
             break;
 
         case 'Add A Department':
-            addDept();
+            addDepartment();
             break;
 
         case 'Update An Employee Role':
@@ -75,7 +75,7 @@ const startMenu = () => {
             break;
 
         case 'Delete A Department':
-            selectDept();
+            selectDepartment();
             break;
 
         case 'Delete A Role':
@@ -92,28 +92,28 @@ const startMenu = () => {
 // Functions to VIEW all user options
 
 // function view all departments
-const viewDepartments = () => {
+const showDepartments = () => {
     const sql = 'SELECT * FROM departments';
     db.query(sql, (err, res) => {
       if (err) throw err
       console.table(res)
-      startMenu();
+      optionsMenu();
     })
   }
 
 // function to view all roles
-const viewRoles = () => {
+const showRoles = () => {
 const sql = 'SELECT roles.title, roles.id, roles.salary, departments.dept_name FROM roles JOIN departments ON roles.dept_id = departments.id';
 
 db.query(sql, (err, res) => {
     if (err) throw err
     console.table(res)
-    startMenu();
+    optionsMenu();
 })
 }
 
 // function to view all employees
-const viewEmployees= () => {
+const showEmployees= () => {
 
 const sql= `SELECT employees.id, employees.first_name, employees.last_name, employees.manager_id, roles.title, roles.salary, departments.dept_name 
 FROM employees 
@@ -125,7 +125,7 @@ ORDER BY employees.id;`
     db.query(sql, (err, res) => {
     if (err) throw err
     console.table(res)
-    startMenu();
+    optionsMenu();
     })
 }
 
@@ -133,7 +133,7 @@ ORDER BY employees.id;`
 // functions for all ADD options
 
 // function to add a department to the database
-const addDept = () => {
+const addDepartment = () => {
     inquirer.prompt({
         type: 'input',
         name: 'dept_name',
@@ -147,7 +147,7 @@ const addDept = () => {
           if (err) throw err
           //console.table(result)
           console.log(`The ${newDept} department was added successfully.`)
-          startMenu();
+          optionsMenu();
         })
       })
   }
@@ -200,7 +200,7 @@ const params = [newRoleData.newRole, newRoleData.newSalary, newRoleData.id]
 db.query(sql, params, (err, res) => {
     if(err) throw err;
     console.log(`${newRoleData.newRole} added successfully!`)
-    startMenu();
+    optionsMenu();
 })
 }
 
@@ -261,7 +261,7 @@ const completeAddEmployee = (newEmployeeData) => {
         console.log(err)
       }
       console.log(`New ${newEmployeeData.title}, ${newEmployeeData.first_name} ${newEmployeeData.last_name}, added successfully.`)
-      return startMenu();
+      return optionsMenu();
     })
 }
 
@@ -378,7 +378,7 @@ const chooseRole = () => {
       //db.query()
       if(data.confirmUpdate === "Cancel, return to menu."){
         console.log('Update cancelled.')
-        startMenu();
+        optionsMenu();
       }
       if(data.confirmUpdate === "Confirm update."){
         console.log(currentEmployee)
@@ -386,7 +386,7 @@ const chooseRole = () => {
         const params = [currentEmployee.newRole_id, currentEmployee.id]
         db.query(sql, params, (err, res) => {
           console.log(`${currentEmployee.first_name} ${currentEmployee.last_name} successfully updated to ${currentEmployee.newRole}`)
-          startMenu();
+          optionsMenu();
         })
       }
     })
@@ -396,7 +396,7 @@ const chooseRole = () => {
 let currentDept = {};
 
 // function that allows the user to select the department that they want to delete
-const selectDept = () => {
+const selectDepartment = () => {
     let deptArr = [];
     const sql = `SELECT * FROM departments`;
   
@@ -434,7 +434,7 @@ const selectDept = () => {
     db.query(sql, params, (err, result) => {
       if(err) throw err
       console.log(`${dept.dept_name} department successfully deleted.`)
-      startMenu();
+      optionsMenu();
     })
 }
 
@@ -477,7 +477,7 @@ const deleteRole = (roleDelete) => {
         console.log('Role not found')
       }
       console.log(`${roleDelete.title} successfully deleted.`)
-      startMenu();
+      optionsMenu();
     })
   }
 
@@ -523,7 +523,7 @@ const deleteEmp = () => {
         console.log('Employee not found')
       }
       console.log(`${empDelete.first_name} ${empDelete.last_name} successfully deleted.`)
-      startMenu();
+      optionsMenu();
     })
 }
 
@@ -540,6 +540,6 @@ app.use((req, res) => {
     console.log('Database connected.');
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
-      startMenu();
+      optionsMenu();
     });
   });
