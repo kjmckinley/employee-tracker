@@ -53,11 +53,11 @@ router.delete('/role/:id', (req, res) => {
         return
       }
       else if (!result.affectedRows){
-        res.json({message: 'Role not found.'})
+        res.json({message: 'Role was not found.'})
       }
       else {
         res.json({
-          message: 'Role successfully deleted.',
+          message: 'Role was successfully deleted and removed from db.',
           changes: result.affectedRows,
           id: req.params.id
         })
