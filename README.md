@@ -32,5 +32,6 @@ The following animation shows an example of the application being used from the 
 ## Contributors
 - Kyle McKinley: kjmckinley
 - Ritchie Ortiz: xRitchie91
-- lacey-griffith
+- Nancy Rosas
+- github: lacey-griffith, who suffered greatly so that we could suffer less.
 
