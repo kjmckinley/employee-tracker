@@ -27,11 +27,7 @@ SO THAT I can organize and plan my business
 
 The following animation shows an example of the application being used from the command line:
 
-![Command Line demo](./assets/12-sql-homework-demo-01.gif)
-
-Design the following database schema containing three tables:
-
-![Database Demo](./assets/12-sql-homework-demo-02.png)
+![Command Line demo](./assets/db_demo.gif)
 
 ## Contributors
 - Kyle McKinley: kjmckinley
