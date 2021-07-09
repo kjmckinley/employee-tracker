@@ -304,20 +304,20 @@ let currentEmployee = {}
 
 // function that allows user to select the employee they would like to update
 const selectEmployee = () => {
-  employeeArr = []
+  EmployeeArray = []
 
   const sql = `SELECT * FROM employees`;
   db.query(sql, (err, res) => {
     if (err) throw err
     for (let i = 0; i < res.length; i++) {
       let employee = `${res[i].first_name} ${res[i].last_name}`
-      employeeArr.push(employee)
+      EmployeeArray.push(employee)
     }
     inquirer.prompt({
       type: 'list',
       name: 'updateEmployee',
       message: 'Which employee would you like to update?',
-      choices: employeeArr.map(employee => `${employee}`)
+      choices: EmployeeArray.map(employee => `${employee}`)
 
     }).then(employee => {
       let index = employee.updateEmployee.indexOf(" ")
@@ -482,47 +482,47 @@ const deleteRole = (roleDelete) => {
   }
 
 // standby employee that will house the employee that is to be deleted
-empDelete = {}
+employeeDelete = {}
 
 // function that allows the user to select an employee to delete
 const chooseEmployeeDelete = () => {
-    let deleteEmpArr = [];
+    let deleteEmployeeArray = [];
 
     const sql = `SELECT * FROM employees`;
     db.query(sql,(req, res) => {
         for(let i = 0; i < res.length; i++){
             let employee = `${res[i].first_name} ${res[i].last_name}`
-            deleteEmpArr.push(employee)
+            deleteEmployeeArray.push(employee)
         }
         inquirer.prompt({
             type: 'list',
-            name: 'deleteEmp',
+            name: 'deleteEmployee',
             message: 'Which employee would you like to delete?',
-            choices: deleteEmpArr.map(employee => `${employee}`)
+            choices: deleteEmployeeArray.map(employee => `${employee}`)
         }).then(employee => {
-            let index = employee.deleteEmp.indexOf(" ")
-            empDelete.first_name = employee.deleteEmp.substr(0, index)
-            empDelete.last_name = employee.deleteEmp.substr(index + 1)
+            let index = employee.deleteEmployee.indexOf(" ")
+            employeeDelete.first_name = employee.deleteEmployee.substr(0, index)
+            employeeDelete.last_name = employee.deleteEmployee.substr(index + 1)
             
             const sql = `SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
-            const params = [empDelete.first_name, empDelete.last_name]
+            const params = [employeeDelete.first_name, employeeDelete.last_name]
             db.query(sql, params, (req, result) => {
-            empDelete.id = result[0].id
-            return deleteEmp(empDelete)
+            employeeDelete.id = result[0].id
+            return deleteEmployee(employeeDelete)
             })
         })
     })
 }
 
 // function that deletes the selected employee
-const deleteEmp = () => {
+const deleteEmployee = () => {
     const sql = `DELETE FROM employees WHERE id = ?`;
-    const params = [empDelete.id]
+    const params = [employeeDelete.id]
     db.query(sql, params, (err, res) => {
       if(!res.affectedRows){
         console.log('Employee not found')
       }
-      console.log(`${empDelete.first_name} ${empDelete.last_name} successfully deleted.`)
+      console.log(`${employeeDelete.first_name} ${employeeDelete.last_name} successfully deleted.`)
       optionsMenu();
     })
 }
