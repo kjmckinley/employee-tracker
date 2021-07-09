@@ -1,6 +1,6 @@
 INSERT INTO departments (dept_name)
 VALUES
-('Pharmacy'),
+('Auto'),
 ('Grocery'),
 ('Beauty'),
 ('Outdoor'),
@@ -11,7 +11,7 @@ INSERT INTO roles (title,salary,dept_id)
 VALUES
 ('Director', 60000, 5),
 ('General Manager',55000, 5),
-('Assistant Manager',50000, 1),
+('Auto Manager',50000, 1),
 ('Grocery Manager',45000, 2),
 ('Fish Manager',45000, 3),
 ('Outdoor Manager',45000, 4),
